@@ -1,8 +1,9 @@
 <template>
   <section class="container">
-    <h2 class="text-center my-4">Nueva Ruta</h2>
-    <button class="btn btn-warning my-3" @click="goToRouterPage">
-      {{ "< Regresar" }}
+    <h2 class="text-center text-secc my-4">Nueva Ruta</h2>
+    <button class="text-succ mb-4 btn-back" @click="goToRouterPage">
+      <i class="fas fa-long-arrow-alt-left"></i>
+      {{ " Regresar" }}
     </button>
     <div class="row">
       <div class="col-12 col-md-6">
@@ -33,7 +34,7 @@
           <span>Altitud Fin de ruta</span>
         </div>
       </div>
-      <button class="btn btn-success" @click="insertRoute">
+      <button class="succes-btn" @click="insertRoute">
         <span v-if="!loadingRequest">Agregar</span>
         <div v-else class="spinner-border text-light" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -90,5 +91,14 @@ const goToRouterPage = () => {
 };
 </script>
 
-<style>
+<style scoped>
+.btn-back {
+  border: none;
+  background: transparent;
+}
+
+.succes-btn {
+  width: min-content;
+  margin: 0 auto;
+}
 </style>

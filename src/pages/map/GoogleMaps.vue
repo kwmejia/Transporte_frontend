@@ -47,9 +47,6 @@ const mapRef = ref();
 const googleMaps = ref();
 const map = ref();
 const markers = ref([]);
-const polygon = ref();
-const headMap = ref();
-const coordinatesPolygon = ref([]);
 const emit = defineEmits(["loaded"]);
 const geocoder = ref();
 const marker = ref();
@@ -64,7 +61,9 @@ async function initializeGoogleMaps() {
   googleMaps.value = await initialGoogleMaps();
   geocoder.value = new googleMaps.value.Geocoder();
   directionsService.value = new googleMaps.value.DirectionsService();
-  directionsRender.value = new googleMaps.value.DirectionsRenderer();
+  directionsRender.value = new googleMaps.value.DirectionsRenderer({
+    polylineOptions: { strokeColor: "#2A2949" },
+  });
 
   map.value = new googleMaps.value.Map(mapRef.value, {
     zoom: 14,
@@ -82,15 +81,12 @@ function setUbication(coordinates) {
     : createMarket(coordinates);
 }
 function createMarket(coordinates) {
-  console.log(coordinates);
-
   marker.value = new googleMaps.value.Marker({
     position: coordinates,
     map: map.value,
     icon: {
       url: "https://cdn-icons-png.flaticon.com/512/6009/6009864.png",
       scaledSize: new googleMaps.value.Size(50, 50),
-      title: "Hello World!",
     },
   });
 }
@@ -123,7 +119,10 @@ function setMarket(coordinates) {
     animation: googleMaps.value.Animation.DROP,
   });
 }
-function marketsCustom(marketsCustomers) {
+function markertsCustom(marketsCustomers) {
+  markers.value.forEach((element) => {
+    element.visible = false;
+  });
   marketsCustomers.forEach((el) => {
     const marker = new googleMaps.value.Marker({
       position: {
@@ -137,10 +136,10 @@ function marketsCustom(marketsCustomers) {
         scaledSize: new googleMaps.value.Size(30, 30),
       },
     });
-    if (props.showInfoWindow) {
+    if (!props.showInfoWindow) {
       const infoWindow = new googleMaps.value.InfoWindow({
         maxWidth: 500,
-        content: props.constructorInfoWindow(el),
+        content: el.cus_name,
       });
       marker.addListener("mouseover", () => {
         infoWindow.open({
@@ -154,100 +153,18 @@ function marketsCustom(marketsCustomers) {
     }
     markers.value.push(marker);
   });
-  markers.value.push(marker);
+  // markers.value.push(marker);
 }
-function createPolygon() {
-  polygon.value = new googleMaps.value.Polygon({
-    strokeColor: "#344563",
-    strokeOpacity: 1,
-    strokeWeight: 3,
-    editable: true,
-    draggable: true,
-    map: map.value,
-  });
-  googleMaps.value.event.addListener(map.value, "click", (event) => {
-    coordinatesPolygon.value = polygon.value.getPath();
-    coordinatesPolygon.value.push(event.latLng);
-  });
-}
-function getCoordinatesPolygon() {
-  let coordinates = [];
-  const vertices = polygon.value.getPath();
-  vertices.forEach((el) => {
-    coordinates.push({ lat: el.lat(), lng: el.lng() });
-  });
-  return coordinates;
-}
-function drawPolygon(geocercas) {
-  for (const geo of geocercas) {
-    const puntos = geo.puntos.map(function (p) {
-      p.lat = parseFloat(p.lat);
-      p.lng = parseFloat(p.lng);
-      return p;
-    });
-    const polygon = new googleMaps.value.Polygon({
-      paths: puntos,
-      strokeColor: "#344563",
-      strokeOpacity: 0.8,
-      strokeWeight: 3,
-      fillColor: "#344563",
-      fillOpacity: 0.35,
-      map: map.value,
-    });
-    const infoWindow = new googleMaps.value.InfoWindow();
-    polygon.addListener("click", (event) => {
-      if (!geo.nombre) return;
-      infoWindow.setContent(`
-				<p class="m-2">${geo.nombre}</p>
-			`);
-      infoWindow.setPosition(event.latLng);
-      infoWindow.open(map.value);
-    });
-    polygon.addListener("mouseout", () => {
-      infoWindow.close();
-    });
-  }
-}
-function drawHeadMap(coordinates) {
-  headMap.value = new googleMaps.value.visualization.HeatmapLayer({
-    data: getPoints(coordinates),
-    map: map.value,
-  });
-  headMap.value.set("radius", props.radiusPointHeat);
-}
-function getPoints(coordinates) {
-  return coordinates.map(
-    (el) => (el = new googleMaps.value.LatLng(el.lat, el.lng))
-  );
-}
+
 function setStyle(style) {
   map.value.setOptions({ styles: styleList[style] });
 }
-function geocodePlaceId(placeId) {
-  const geocoder = new googleMaps.value.Geocoder();
-  return new Promise((resolve) => {
-    geocoder.geocode({ placeId }).then(({ results }) => {
-      resolve({
-        coordinates: {
-          lat: results[0].geometry.location.lat(),
-          lng: results[0].geometry.location.lng(),
-        },
-        address: results[0].formatted_address,
-      });
-    });
-  });
-}
 
 defineExpose({
-  getCoordinatesPolygon,
   initializeGoogleMaps,
-  geocodePlaceId,
-  marketsCustom,
-  createPolygon,
+  markertsCustom,
   setUbication,
   createMarket,
-  drawPolygon,
-  drawHeadMap,
   setMarket,
   setStyle,
   drawRoute,
@@ -259,6 +176,8 @@ defineExpose({
   position: relative;
   width: 100%;
   height: 60vh !important;
+  border-radius: 20px;
+  border: 4px solid var(--blue2);
 }
 p {
   user-select: none;

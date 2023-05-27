@@ -1,12 +1,12 @@
 <template>
-  <h1>Mapa</h1>
+  <h1 class="text-center my-4">Mapa</h1>
   <section class="container">
     <div class="row">
       <div class="col-8">
         <GoogleMaps ref="mapa" />
       </div>
       <div class="col-4">
-        <div class="">
+        <div class="d-flex flex-wrap justify-content-center">
           <div class="inputBox mb-3 d-flex w-100">
             <select
               name="category"
@@ -14,7 +14,7 @@
               v-model="routeId"
               required
             >
-              <option selected disabled value="">Ruta</option>
+              <option selected disabled value="">Elige una ruta</option>
               <option
                 v-for="route in listRoutes"
                 :key="route.id"
@@ -24,7 +24,7 @@
               </option>
             </select>
           </div>
-          <button @click="printRoute">pintar</button>
+          <button @click="printRoute" class="succes-btn">Buscar</button>
         </div>
       </div>
     </div>
@@ -59,18 +59,17 @@ async function getAllRoutes() {
 
 function printRoute() {
   if (routeId.value == "") {
-    showAlertError("Ecoge una ruta");
+    showAlertError("Escoge una ruta");
     return;
   }
 
   let route = listRoutes.value;
   route = route.filter((route) => route.id == routeId.value);
-  console.log(route);
 
   const customersByroute = listCustomers.value.filter(
     (customer) => customer.routes_rou_id == routeId.value
   );
-  mapa.value.marketsCustom(customersByroute);
+  mapa.value.markertsCustom(customersByroute);
   const { start_lat, start_lng, end_lat, end_lng } = route[0];
   mapa.value.drawRoute(start_lat, start_lng, end_lat, end_lng);
 

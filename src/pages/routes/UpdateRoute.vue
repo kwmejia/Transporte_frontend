@@ -1,8 +1,9 @@
 <template>
   <section class="container">
-    <h2 class="text-center my-4">Actualizar Ruta</h2>
-    <button class="btn btn-warning my-3" @click="goToRouterPage">
-      {{ "< Regresar" }}
+    <h2 class="text-center text-secc my-4">Actualizar Ruta</h2>
+    <button class="text-succ mb-4 btn-back" @click="goToRouterPage">
+      <i class="fas fa-long-arrow-alt-left"></i>
+      {{ " Regresar" }}
     </button>
     <div class="row">
       <div class="col-12 col-md-6 d-flex justify-content-center">
@@ -36,11 +37,11 @@
             <span>Latitud Inicio de ruta</span>
           </div>
         </div>
-        <div v-else class="spinner-border text-dark" role="status">
+        <div v-else class="spinner-border text-light" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6" v-if="!loadingRequestMounted">
         <div class="inputBox mb-3 d-flex w-100">
           <input type="text" name="name_product" required v-model="start_lng" />
           <span>Altitud Inicio de ruta</span>
@@ -54,7 +55,7 @@
           <span>Altitud Fin de ruta</span>
         </div>
       </div>
-      <button class="btn btn-success" @click="updateRoute">
+      <button class="succes-btn" @click="updateRoute">
         <span v-if="!loadingRequest">Actualizar</span>
         <div v-else class="spinner-border text-light" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -147,5 +148,14 @@ const goToRouterPage = () => {
 };
 </script>
 
-<style>
+<style scoped>
+.btn-back {
+  border: none;
+  background: transparent;
+}
+
+.succes-btn {
+  width: min-content;
+  margin: 0 auto;
+}
 </style>

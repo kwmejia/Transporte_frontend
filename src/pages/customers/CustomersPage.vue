@@ -1,9 +1,12 @@
 <template>
   <h1 class="text-center my-4">Clientes</h1>
   <section class="container">
-    <router-link :to="{ name: 'newCustomer' }" class="btn btn-success mb-4">
-      Nuevo cliente
-    </router-link>
+    <div class="mb-4">
+      <router-link :to="{ name: 'newCustomer' }" class="succes-btn my-4">
+        <i class="fas fa-plus me-2"></i>
+        <span>Nuevo cliente</span>
+      </router-link>
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -12,11 +15,12 @@
           <th scope="col">Identifiacion</th>
           <th scope="col">Telefono</th>
           <th scope="col">Nombre de Ruta</th>
+          <th scope="col">Acciones</th>
         </tr>
       </thead>
       <tbody v-if="!loadingGetCustomers">
         <tr v-for="(customer, index) in listCustomers" :key="customer.id">
-          <th scope="row">{{ index + 1 }}</th>
+          <td class="ps-3 fw-bold">{{ index + 1 }}</td>
           <td>{{ customer.cus_name + " " + customer.cus_lastname }}</td>
           <td>{{ customer.cus_identification }}</td>
           <td>{{ customer.cus_phone }}</td>
@@ -36,7 +40,7 @@
       </tbody>
     </table>
     <div v-if="loadingGetCustomers" class="w-100 d-flex justify-content-center">
-      <div class="spinner-border text-dark mx-auto my-3" role="status"></div>
+      <div class="spinner-border text-light mx-auto my-3" role="status"></div>
     </div>
   </section>
 </template>

@@ -1,9 +1,12 @@
 <template>
   <h1 class="text-center my-4">Rutas</h1>
   <section class="container">
-    <router-link :to="{ name: 'newRoute' }" class="btn btn-success mb-4">
-      Nueva ruta
-    </router-link>
+    <div class="mb-4">
+      <router-link :to="{ name: 'newRoute' }" class="succes-btn my-4">
+        <i class="fas fa-plus me-2"></i>
+        <span>Nueva ruta</span>
+      </router-link>
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -15,22 +18,28 @@
       </thead>
       <tbody v-if="!loadingGetRoutes">
         <tr v-for="(route, index) in listRoutes" :key="route.id">
-          <th scope="row">{{ index + 1 }}</th>
+          <td class="ps-3 fw-bold">{{ index + 1 }}</td>
           <td>{{ route.rou_code }}</td>
           <td>{{ route.rou_name }}</td>
           <td class="d-flex gap-3">
             <button class="btn btn-danger" @click="alertDeleteIdea(route.id)">
               <i class="fas fa-trash-alt"></i>
             </button>
-            <button class="btn btn-primary" @click="goToEditRoute(route.id)">
+            <button
+              class="btn bg-succ btn-delete"
+              @click="goToEditRoute(route.id)"
+            >
               <i class="fas fa-edit"></i>
             </button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div v-if="loadingGetRoutes" class="w-100 d-flex justify-content-center">
-      <div class="spinner-border text-dark mx-auto my-3" role="status"></div>
+    <div
+      v-if="loadingGetRoutes"
+      class="w-100 d-flex text-light justify-content-center"
+    >
+      <div class="spinner-border text-light mx-auto my-3" role="status"></div>
     </div>
   </section>
 </template>
@@ -93,5 +102,8 @@ const goToEditRoute = (id) => {
 };
 </script>
 
-<style>
+<style scoped>
+.btn-delete i {
+  color: var(--white);
+}
 </style>
