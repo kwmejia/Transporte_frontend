@@ -4,7 +4,6 @@
 </template>
 
 <script setup>
-/* eslint-disable */
 import {
   ref,
   onBeforeMount,
@@ -83,28 +82,37 @@ function setUbication(coordinates) {
     : createMarket(coordinates);
 }
 function createMarket(coordinates) {
+  console.log(coordinates);
+
   marker.value = new googleMaps.value.Marker({
     position: coordinates,
     map: map.value,
+    icon: {
+      url: "https://cdn-icons-png.flaticon.com/512/6009/6009864.png",
+      scaledSize: new googleMaps.value.Size(50, 50),
+      title: "Hello World!",
+    },
   });
 }
 
-function drawRoute() {
-  const start = new googleMaps.value.LatLng(7.0960826, -73.116223);
+function drawRoute(start_lat, start_lng, end_lat, end_lng) {
+  const start = new googleMaps.value.LatLng(
+    parseFloat(start_lat),
+    parseFloat(start_lng)
+  );
   const end = new googleMaps.value.LatLng(
-    7.1093686086817796,
-    -73.11941380922316
+    parseFloat(end_lat),
+    parseFloat(end_lng)
   );
   const request = {
     origin: start,
     destination: end,
     travelMode: googleMaps.value.TravelMode.DRIVING,
   };
-  directionsService.value.route(request, function (response, status) {
+  directionsService.value.route(request, function (response) {
     directionsRender.value.setDirections(response);
     directionsRender.value.setMap(map.value);
     directionsRender.value.setOptions({ suppressMarkers: false });
-    console.log(response, status);
   });
 }
 
@@ -115,14 +123,17 @@ function setMarket(coordinates) {
     animation: googleMaps.value.Animation.DROP,
   });
 }
-function marketsCustom(marketsRestaurants) {
-  marketsRestaurants.forEach((el) => {
+function marketsCustom(marketsCustomers) {
+  marketsCustomers.forEach((el) => {
     const marker = new googleMaps.value.Marker({
-      position: el.coordenadas,
+      position: {
+        lat: parseFloat(el.cus_latitude),
+        lng: parseFloat(el.cus_altitude),
+      },
       map: map.value,
       animation: googleMaps.value.Animation.DROP,
       icon: {
-        url: el.fotoLogoMini || el.fotoLogo,
+        url: "https://cdn-icons-png.flaticon.com/512/6009/6009864.png",
         scaledSize: new googleMaps.value.Size(30, 30),
       },
     });
@@ -131,7 +142,7 @@ function marketsCustom(marketsRestaurants) {
         maxWidth: 500,
         content: props.constructorInfoWindow(el),
       });
-      marker.addListener("mouseover", (event) => {
+      marker.addListener("mouseover", () => {
         infoWindow.open({
           anchor: marker,
           map: map.value,
@@ -143,6 +154,7 @@ function marketsCustom(marketsRestaurants) {
     }
     markers.value.push(marker);
   });
+  markers.value.push(marker);
 }
 function createPolygon() {
   polygon.value = new googleMaps.value.Polygon({

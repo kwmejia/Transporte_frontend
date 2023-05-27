@@ -11,15 +11,16 @@
             <select
               name="category"
               class="form-control"
-              v-model="customerSelected"
+              v-model="routeId"
+              required
             >
-              <option selected disabled value="">Elige una ruta</option>
+              <option selected disabled value="">Ruta</option>
               <option
-                v-for="customer in listCustomers"
-                :key="customer.id"
-                :value="customer.id"
+                v-for="route in listRoutes"
+                :key="route.id"
+                :value="route.id"
               >
-                {{ customer.cus_name }}
+                {{ route.rou_name }}
               </option>
             </select>
           </div>
@@ -36,25 +37,45 @@ import { showAlertError } from "@/helpers/alerts";
 import GoogleMaps from "@/pages/map/GoogleMaps.vue";
 import { onMounted, ref } from "vue";
 const mapa = ref();
-const customerSelected = ref("");
+const routeId = ref("");
+const listRoutes = ref([]);
+const listCustomers = ref();
+
 onMounted(() => {
-  getAllCustomers();
+  getAllRoutes();
 });
 
-let listCustomers = ref([]);
-async function getAllCustomers() {
+async function getAllRoutes() {
   try {
-    const resp = await clientHTTP.get(`${baseURL}/customers`);
-    listCustomers.value = await resp.data.data;
+    const resp = await clientHTTP.get(`${baseURL}/routes`);
+    listRoutes.value = await resp.data.data;
+
+    const response = await clientHTTP.get(`${baseURL}/customers`);
+    listCustomers.value = await response.data.data;
   } catch (error) {
     showAlertError();
   }
 }
 
 function printRoute() {
+  if (routeId.value == "") {
+    showAlertError("Ecoge una ruta");
+    return;
+  }
+
+  let route = listRoutes.value;
+  route = route.filter((route) => route.id == routeId.value);
+  console.log(route);
+
+  const customersByroute = listCustomers.value.filter(
+    (customer) => customer.routes_rou_id == routeId.value
+  );
+  mapa.value.marketsCustom(customersByroute);
+  const { start_lat, start_lng, end_lat, end_lng } = route[0];
+  mapa.value.drawRoute(start_lat, start_lng, end_lat, end_lng);
+
   // mapa.value.setUbication({ lat: 7.0960826, lng: -73.116223 });
   // mapa.value.createMarket({ lat: 7.1093686086817796, lng: -73.11941380922316 });
-  mapa.value.drawRoute();
 }
 </script>
 

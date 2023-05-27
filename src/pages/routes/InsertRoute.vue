@@ -14,15 +14,31 @@
           <input type="text" name="name_product" required v-model="nameRoute" />
           <span>Nombre de la ruta</span>
         </div>
+        <div class="inputBox mb-3 d-flex w-100">
+          <input type="text" name="name_product" required v-model="start_lat" />
+          <span>Latitud Inicio de ruta</span>
+        </div>
       </div>
       <div class="col-12 col-md-6">
-        <button class="btn btn-success" @click="insertRoute">
-          <span v-if="!loadingRequest">Agregar</span>
-          <div v-else class="spinner-border text-light" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </button>
+        <div class="inputBox mb-3 d-flex w-100">
+          <input type="text" name="name_product" required v-model="start_lng" />
+          <span>Altitud Inicio de ruta</span>
+        </div>
+        <div class="inputBox mb-3 d-flex w-100">
+          <input type="text" name="name_product" required v-model="end_lat" />
+          <span>Latitud Fin de ruta</span>
+        </div>
+        <div class="inputBox mb-3 d-flex w-100">
+          <input type="text" name="name_product" required v-model="end_lng" />
+          <span>Altitud Fin de ruta</span>
+        </div>
       </div>
+      <button class="btn btn-success" @click="insertRoute">
+        <span v-if="!loadingRequest">Agregar</span>
+        <div v-else class="spinner-border text-light" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </button>
     </div>
   </section>
 </template>
@@ -38,6 +54,10 @@ const router = useRouter();
 
 let codeRoute = ref("");
 let nameRoute = ref("");
+let start_lat = ref("");
+let start_lng = ref("");
+let end_lat = ref("");
+let end_lng = ref("");
 let loadingRequest = ref(false);
 
 const insertRoute = async () => {
@@ -51,6 +71,10 @@ const insertRoute = async () => {
     await clientHTTP.post(`${baseURL}/routes`, {
       code: codeRoute.value,
       name: nameRoute.value,
+      start_lat: start_lat.value,
+      start_lng: start_lng.value,
+      end_lat: end_lat.value,
+      end_lng: end_lng.value,
     });
     loadingRequest.value = false;
     showAlertSuccess();
