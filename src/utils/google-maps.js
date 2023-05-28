@@ -52,4 +52,4 @@ const iniciarGoogleMaps = (key, opciones = {}) => cargarUnaSolaVez(
     }).then(() => window.google.maps),
 )
 
-export const initialGoogleMaps = iniciarGoogleMaps('AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg', { libraries: 'places' })
+export const initialGoogleMaps = iniciarGoogleMaps('AIzaSyD_tAc3QvoyhYgzvt9mFPRo98F2GAmfaAU', { libraries: 'places' })
