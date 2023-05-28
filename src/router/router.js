@@ -4,6 +4,7 @@ const routes = [
   {
     path: "/",
     redirect: "/home",
+
   },
 
   {

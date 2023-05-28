@@ -2,10 +2,10 @@
   <h1 class="text-center my-4">Mapa</h1>
   <section class="container">
     <div class="row">
-      <div class="col-8">
+      <div class="col-12 col-md-8">
         <GoogleMaps ref="mapa" />
       </div>
-      <div class="col-4">
+      <div class="col-12 col-md-4">
         <div class="d-flex flex-wrap justify-content-center">
           <div class="inputBox mb-3 d-flex w-100">
             <select

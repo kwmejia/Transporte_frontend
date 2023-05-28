@@ -7,38 +7,40 @@
         <span>Nuevo cliente</span>
       </router-link>
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Identifiacion</th>
-          <th scope="col">Telefono</th>
-          <th scope="col">Nombre de Ruta</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody v-if="!loadingGetCustomers">
-        <tr v-for="(customer, index) in listCustomers" :key="customer.id">
-          <td class="ps-3 fw-bold">{{ index + 1 }}</td>
-          <td>{{ customer.cus_name + " " + customer.cus_lastname }}</td>
-          <td>{{ customer.cus_identification }}</td>
-          <td>{{ customer.cus_phone }}</td>
-          <td>{{ customer.rou_name }}</td>
-          <td class="d-flex gap-3">
-            <button
-              class="btn btn-danger"
-              @click="alertDeleteIdea(customer.id)"
-            >
-              <i class="fas fa-trash-alt"></i>
-            </button>
-            <button class="btn btn-primary" @click="goToEdit(customer.id)">
-              <i class="fas fa-edit"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Identifiacion</th>
+            <th scope="col">Telefono</th>
+            <th scope="col">Nombre de Ruta</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody v-if="!loadingGetCustomers">
+          <tr v-for="(customer, index) in listCustomers" :key="customer.id">
+            <td class="ps-3 fw-bold">{{ index + 1 }}</td>
+            <td>{{ customer.cus_name + " " + customer.cus_lastname }}</td>
+            <td>{{ customer.cus_identification }}</td>
+            <td>{{ customer.cus_phone }}</td>
+            <td>{{ customer.rou_name }}</td>
+            <td class="d-flex gap-3">
+              <button
+                class="btn btn-danger"
+                @click="alertDeleteIdea(customer.id)"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <button class="btn btn-primary" @click="goToEdit(customer.id)">
+                <i class="fas fa-edit"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div v-if="loadingGetCustomers" class="w-100 d-flex justify-content-center">
       <div class="spinner-border text-light mx-auto my-3" role="status"></div>
     </div>

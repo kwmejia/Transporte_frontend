@@ -7,34 +7,36 @@
         <span>Nueva ruta</span>
       </router-link>
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Codigo</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody v-if="!loadingGetRoutes">
-        <tr v-for="(route, index) in listRoutes" :key="route.id">
-          <td class="ps-3 fw-bold">{{ index + 1 }}</td>
-          <td>{{ route.rou_code }}</td>
-          <td>{{ route.rou_name }}</td>
-          <td class="d-flex gap-3">
-            <button class="btn btn-danger" @click="alertDeleteIdea(route.id)">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-            <button
-              class="btn bg-succ btn-delete"
-              @click="goToEditRoute(route.id)"
-            >
-              <i class="fas fa-edit"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Codigo</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody v-if="!loadingGetRoutes">
+          <tr v-for="(route, index) in listRoutes" :key="route.id">
+            <td class="ps-3 fw-bold">{{ index + 1 }}</td>
+            <td>{{ route.rou_code }}</td>
+            <td>{{ route.rou_name }}</td>
+            <td class="d-flex gap-3">
+              <button class="btn btn-danger" @click="alertDeleteIdea(route.id)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <button
+                class="btn bg-succ btn-delete"
+                @click="goToEditRoute(route.id)"
+              >
+                <i class="fas fa-edit"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div
       v-if="loadingGetRoutes"
       class="w-100 d-flex text-light justify-content-center"

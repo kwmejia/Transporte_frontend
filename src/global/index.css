@@ -204,8 +204,8 @@ select:focus {
   color: var(--black);
   border: none;
   border-radius: 8px;
-  padding: 10px;
-  min-width: 300px;
+  padding: 5px 10px;
+  min-width: min-content;
   transition: .3s all;
   font-weight: 500;
 }
